@@ -7,7 +7,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Year;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import static java.util.Objects.isNull;
 
 @Entity
 @Table(schema = "movie",name = "film")
@@ -41,7 +45,8 @@ public class Film {
     private BigDecimal replacementCost;
 
     @Column(columnDefinition = "enum('G', 'PG', 'PG-13', 'R', 'NC-17')")
-    private Raiting rating;
+    @Convert(converter = RatingConvertor.class)
+    private Rating rating;
     @Column(name = "special_features",columnDefinition = "set('Trailers', 'Commentaries', 'Deleted Scenes', 'Behind the Scenes')")
     private String specialFeatures;
 
@@ -141,20 +146,35 @@ public class Film {
         this.replacementCost = replacementCost;
     }
 
-    public Raiting getRating() {
+    public Rating getRating() {
         return rating;
     }
 
-    public void setRating(Raiting raiting) {
-        this.rating = raiting;
+    public void setRating(Rating rating) {
+        this.rating = rating;
     }
 
-    public String getSpecialFeatures() {
-        return specialFeatures;
+    public Set<Feature> getSpecialFeatures() {
+
+        if (isNull(specialFeatures) || specialFeatures.isEmpty()) return null;
+
+        Set<Feature> result = new HashSet<>();
+        String[] featuresString = specialFeatures.split(",");
+        for (String feature : featuresString) {
+              result.add(Feature.getFeatureByValue(feature));
+        }
+        result.remove(null);
+        return result;
     }
 
-    public void setSpecialFeatures(String specialFeatures) {
-        this.specialFeatures = specialFeatures;
+    public void setSpecialFeatures(Set<Feature> specialFeatures) {
+
+        if (isNull(specialFeatures)) {
+            this.specialFeatures = null;
+        }else{
+            this.specialFeatures = specialFeatures.stream().map(Feature::getValue).collect(Collectors.joining(","));
+        }
+
     }
 
     public LocalDateTime getLastUpdate() {

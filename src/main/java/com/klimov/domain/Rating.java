@@ -1,6 +1,6 @@
 package com.klimov.domain;
 
-public enum Raiting {
+public enum Rating {
     G("G"),
     PG("PG"),
     PG13("PG-13"),
@@ -9,7 +9,11 @@ public enum Raiting {
 
     private final String value;
 
-    Raiting(String value) {
+    Rating(String value) {
         this.value = value;
+    }
+
+    public String getValue() {
+        return value;
     }
 }

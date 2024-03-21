@@ -2,8 +2,11 @@
 
  map entities onto existing tables, and add minimal functionality to check that the mapping is done correctly.
 Now in more detail:
+
     1. Download the dump file (https://javarush.com/downloads/ide/javarush/dump-hibernate-2.sql) and deploy it on your local machine. As a database, we will use a test database, which is distributed as an example along with the MySQL installation package. The dump is needed to record the state of the database, since we cannot guarantee that it will not change in a day, month, or year.
+    
     2. We won’t have a project template, so create the project yourself. This should be a maven project with all the necessary dependencies ( hibernate-core-jakarta , mysql-connector-java , p6spy ).
+    
     3. Connect our local deployed database as a datasource in Idea. After that, in the Database tab, place the cursor on the movie diagram and press the key combination Alt+Ctrl+Shift+U(works only in the Ultimate version). This will show the structure of the entire movie schema (with column names, keys, etc.). It looks something like this:
        I agree, it's not very comfortable to watch. Disable showing the names of all columns and comments:
        As a result, you will get a database schema that can already be analyzed:
